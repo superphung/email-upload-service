@@ -3,6 +3,7 @@ var amqp = require('amqplib/callback_api')
 import mongoose from 'mongoose'
 import * as db from './models'
 import jwtMiddleware from 'express-jwt'
+import cors from 'cors'
 import app from './app'
 
 const SECRET = process.env.SECRET
@@ -10,6 +11,8 @@ const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost/eventdb'
 const amqpUrl = process.env.AMQP_URL || 'amqp://localhost'
 
 mongoose.connect(MONGO_URL)
+
+app.use(cors())
 
 amqp.connect(amqpUrl, function (err, conn) {
   if (err) {
