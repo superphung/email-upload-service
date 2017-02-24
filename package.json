@@ -1,0 +1,35 @@
+{
+  "name": "server-boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard",
+    "precommit": "npm run lint",
+    "commit": "git cz"
+  },
+  "keywords": [],
+  "author": "Phung Eric <superphung44@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-polyfill": "6.23.0",
+    "babel-preset-es2015": "6.22.0",
+    "babel-preset-stage-3": "6.22.0",
+    "babel-register": "6.23.0",
+    "commitizen": "2.9.5",
+    "cz-conventional-changelog": "1.2.0",
+    "standard": "8.6.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "amqplib": "0.5.1",
+    "body-parser": "1.16.1",
+    "express": "4.14.1",
+    "express-jwt": "5.1.0",
+    "mongoose": "4.8.4"
+  }
+}
