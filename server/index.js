@@ -7,8 +7,8 @@ import cors from 'cors'
 import app from './app'
 
 const SECRET = process.env.SECRET
-const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost/eventdb'
-const amqpUrl = process.env.AMQP_URL || 'amqp://localhost'
+const MONGO_URL = process.env.MONGO_URL || 'mongodb://mongo/eventdb'
+const amqpUrl = process.env.AMQP_URL || 'amqp://rabbit'
 
 mongoose.connect(MONGO_URL)
 
@@ -38,6 +38,7 @@ amqp.connect(amqpUrl, function (err, conn) {
 
     app.post('/updatePattern', jwtMiddleware({secret: SECRET}), async (req, res) => {
       const {patterns} = req.body
+      console.log('patterns', patterns);
       if (!patterns) {
         res.status(400).send('missing params')
       }
@@ -45,7 +46,15 @@ amqp.connect(amqpUrl, function (err, conn) {
         .filter(pattern => pattern && pattern.company && pattern.city && pattern.pattern)
         .map(p => {
           const {company, city, pattern} = p
-          return {company, city, pattern}
+          let splited
+          try {
+            splited = pattern.split('@')
+          } catch (e) {
+            console.log('err', e);
+            return;
+          }
+          const domain = `@${splited[1]}`
+          return {company, city, pattern, domain}
         })
       if (filtered.length === 0) {
         return res.status(200).json({message: 'ok'})
